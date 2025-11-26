@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reiseziel Countdown</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Arial", sans-serif;
+        background: #ffffff;
+        text-align: center;
+        overflow-x: hidden;
+    }
+
+    h1 {
+        margin-top: 40px;
+        font-size: 34px;
+        color: #b30000;
+        text-shadow: 0 0 8px rgba(255, 220, 220, 0.8);
+        animation: fadeIn 2s ease-in-out;
+    }
+
+    /* Countdown groß + Rot */
+    #countdown {
+        margin-top: 60px;
+        font-size: 90px;
+        font-weight: bold;
+        color: #cc0000;
+        animation: pulse 2s infinite ease-in-out;
+        line-height: 1.2;
+    }
+
+    #destination {
+        display: none;
+        margin-top: 40px;
+        font-size: 50px;
+        color: #0a2b00;
+        font-weight: bold;
+        animation: fadeInBig 1.8s ease-out forwards;
+    }
+
+    /* Packliste dauerhaft sichtbar */
+    #packlist-container {
+        margin-top: 40px;
+        font-size: 24px;
+        color: #222;
+    }
+
+    #packlist-title {
+        font-size: 30px;
+        font-weight: bold;
+        color: #b30000;
+        margin-bottom: 10px;
+    }
+
+    #packlist {
+        line-height: 1.5;
+    }
+
+    /* Animationen */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInBig {
+        from { opacity: 0; transform: scale(0.8); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+
+    /* Goldener Schneefall */
+    .snowflake {
+        position: fixed;
+        top: -10px;
+        color: #d4a017; /* gold */
+        font-size: 20px;
+        user-select: none;
+        pointer-events: none;
+        animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(-10px); opacity: 1; }
+        100% { transform: translateY(110vh); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<h1>🎄 Reiseziel 🎅</h1>
+
+<div id="countdown"></div>
+
+<!-- Packliste dauerhaft unter dem Countdown -->
+<div id="packlist-container">
+    <h2 id="packlist-title">🧳 Packliste:</h2>
+    <div id="packlist">
+        • Badesachen <br>
+        • Wintergewand <br>
+        • Schönes Gewand
+    </div>
+</div>
+
+<div id="destination">✨ Dein Reiseziel ist: <br><br> 🎉 <span style="font-size:60px;">PARIS 🇫🇷</span> 🎉</div>
+
+<script>
+    // Countdown bis 1. Januar 2026 – 06:30
+    var revealTime = new Date("Jan 1, 2026 06:30:00").getTime();
+
+    var timer = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = revealTime - now;
+
+        if (distance > 0) {
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML =
+                days + "T " + hours + "h " + minutes + "m " + seconds + "s";
+        } else {
+            clearInterval(timer);
+            document.getElementById("countdown").style.display = "none";
+            document.getElementById("destination").style.display = "block";
+        }
+    }, 1000);
+
+    // Goldener Schneefall
+    function createSnowflake() {
+        const snowflake = document.createElement("div");
+        snowflake.classList.add("snowflake");
+        snowflake.textContent = "❄";
+
+        snowflake.style.left = Math.random() * 100 + "vw";
+        snowflake.style.animationDuration = 4 + Math.random() * 4 + "s";
+        snowflake.style.fontSize = (14 + Math.random() * 12) + "px";
+
+        document.body.appendChild(snowflake);
+
+        setTimeout(() => snowflake.remove(), 8000);
+    }
+
+    setInterval(createSnowflake, 150);
+</script>
+
+</body>
+</html>
