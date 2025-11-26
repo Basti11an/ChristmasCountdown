@@ -9,8 +9,7 @@
     body {
         margin: 0;
         font-family: "Arial", sans-serif;
-        background: #ffffff; /* weißer Hintergrund */
-        color: #000;
+        background: #ffffff;
         text-align: center;
         overflow-x: hidden;
         padding: 10px;
@@ -24,6 +23,15 @@
         animation: fadeIn 2s ease-in-out;
     }
 
+    h2 {
+        margin-top: 15px;
+        font-size: 20px; 
+        color: #000000;
+        text-shadow: 0 0 8px rgba(255, 220, 220, 0.8);
+        animation: fadeIn 4s ease-in-out;
+    }
+
+    /* Countdown groß + Rot */
     #countdown {
         margin-top: 40px;
         font-size: 60px;
@@ -42,15 +50,12 @@
         display: none;
         margin-top: 30px;
         font-size: 36px;
+        color: #0a2b00;
         font-weight: bold;
         animation: fadeInBig 1.8s ease-out forwards;
     }
 
-    #destination span {
-        font-size: 60px;
-        color: #cc0000; /* rot für Paris */
-    }
-
+    /* Packliste */
     #packlist-container {
         margin-top: 30px;
         font-size: 18px;
@@ -85,24 +90,57 @@
         transition: max-height 0.3s ease;
     }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeInBig { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+    /* Animationen */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 
-    canvas {
+    @keyframes fadeInBig {
+        from { opacity: 0; transform: scale(0.8); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+
+    /* GOLDENE SCHNEEFLOCKEN */
+    .snowflake {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: -10px;
+        color: #d4a017;
+        font-size: 20px;
+        user-select: none;
         pointer-events: none;
-        z-index: 999;
+        animation: fall linear infinite;
+        z-index: 9999;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(-10px); opacity: 1; }
+        100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    /* Responsiv */
+    @media (max-width: 600px) {
+        h1 { font-size: 24px; }
+        #countdown { font-size: 36px; }
+        #countdown span { display: block; margin: 5px 0; }
+        #destination { font-size: 28px; }
+        #packlist-title { font-size: 20px; }
+        #packlist { font-size: 16px; }
     }
 </style>
 </head>
 <body>
 
 <h1>🎄 Reiseziel 🎅</h1>
+<h2>Hi Sophie und Elena</h2>
+<h2>Wir hoffen euch gefällt das Geschenk </h2>
+<h2>Das Ziel erfährt ihr bald </h2>
 
 <div id="countdown">
     <span id="days">0T</span>
@@ -113,26 +151,26 @@
 
 <div id="packlist-container">
     <h2 id="packlist-title">
-        🧳 Packliste 
-        <span class="arrow">▼</span>
+        🧳 Was ihr sicher braucht 
+        <span class="arrow">v</span>
     </h2>
     <div id="packlist">
         • Warme Jacke / Mantel <br>
-        • Pullover & Langarmshirts <br>
+        • Pullover<br>
         • Schal, Mütze & Handschuhe <br>
-        • Bequeme Schuhe (zum Laufen) <br>
-        • Jeans / Hosen <br>
+        • Bequeme Schuhe (wir werden viel gehen) <br>
+        • schöne/gemütliche Hosen <br>
         • Unterwäsche & Socken <br>
         • Handy & Ladegerät <br>
+        • Badesachen <br>
         • Reisepass / Tickets / Geld
     </div>
 </div>
 
-<div id="destination">✨ Euer Reiseziel ist: ✨</div>
-<canvas id="fireworkCanvas" style="display:none;"></canvas>
+<div id="destination">✨ Dein Reiseziel ist: <br><br> 🎉 <span style="font-size:60px;">PARIS</span> 🎉</div>
 
 <script>
-    // Countdown bis 1. Januar 2026 – 06:30
+    // Countdown
     var revealTime = new Date("Jan 1, 2026 06:30:00").getTime();
 
     var timer = setInterval(function() {
@@ -152,11 +190,29 @@
         } else {
             clearInterval(timer);
             document.getElementById("countdown").style.display = "none";
-            startFireworks();
+            document.getElementById("destination").style.display = "block";
         }
     }, 1000);
 
-    // Packliste toggle
+
+    // ❄ GOLDENE SCHNEEFLOCKEN
+    function createSnowflake() {
+        const snowflake = document.createElement("div");
+        snowflake.classList.add("snowflake");
+        snowflake.textContent = "❄";
+
+        snowflake.style.left = Math.random() * 100 + "vw";
+        snowflake.style.animationDuration = 4 + Math.random() * 4 + "s";
+        snowflake.style.fontSize = (14 + Math.random() * 12) + "px";
+
+        document.body.appendChild(snowflake);
+        setTimeout(() => snowflake.remove(), 8000);
+    }
+
+    setInterval(createSnowflake, 150);
+
+
+    // Packliste Ein/Ausklappen
     const title = document.getElementById("packlist-title");
     const list = document.getElementById("packlist");
     const arrow = title.querySelector(".arrow");
@@ -170,77 +226,6 @@
             arrow.style.transform = "rotate(0deg)";
         }
     });
-
-    // Rotes Feuerwerk auf weißem Hintergrund
-    function startFireworks() {
-        const canvas = document.getElementById("fireworkCanvas");
-        canvas.style.display = "block";
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let fireworks = [];
-
-        class Firework {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.particles = [];
-                for (let i = 0; i < 80; i++) {
-                    this.particles.push({
-                        x: x,
-                        y: y,
-                        dx: (Math.random() - 0.5) * 6,
-                        dy: (Math.random() - 0.5) * 6,
-                        alpha: 1,
-                        color: `rgba(255,0,0,1)` // rot
-                    });
-                }
-            }
-            update() {
-                this.particles.forEach(p => {
-                    p.x += p.dx;
-                    p.y += p.dy;
-                    p.dy += 0.05;
-                    p.alpha -= 0.02;
-                });
-                this.particles = this.particles.filter(p => p.alpha > 0);
-            }
-            draw() {
-                this.particles.forEach(p => {
-                    ctx.globalAlpha = p.alpha;
-                    ctx.fillStyle = p.color;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
-                    ctx.fill();
-                });
-                ctx.globalAlpha = 1;
-            }
-        }
-
-        let frames = 0;
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (frames % 10 === 0) {
-                fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height / 2));
-            }
-
-            fireworks.forEach(f => { f.update(); f.draw(); });
-            fireworks = fireworks.filter(f => f.particles.length > 0);
-
-            frames++;
-            if (frames < 150) {
-                requestAnimationFrame(animate);
-            } else {
-                canvas.style.display = "none";
-                document.getElementById("destination").innerHTML = "🎉 PARIS 🇫🇷 🎉";
-                document.getElementById("destination").style.display = "block";
-            }
-        }
-
-        animate();
-    }
 </script>
 
 </body>
