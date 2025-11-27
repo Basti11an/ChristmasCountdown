@@ -5,60 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reiseziel Countdown</title>
 
+<!-- Neue schöne Schrift -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
 <style>
     body {
         margin: 0;
-        font-family: "Arial", sans-serif;
+        padding: 15px;
+        font-family: "Poppins", sans-serif;
         background: #ffffff;
         text-align: center;
         overflow-x: hidden;
-        padding: 10px;
     }
 
     h1 {
-        margin-top: 40px;
-        font-size: 28px;
+        margin-top: 20px;
+        font-size: 30px;
         color: #b30000;
-        text-shadow: 0 0 8px rgba(255, 220, 220, 0.8);
-        animation: fadeIn 2s ease-in-out;
+        font-weight: 700;
+        text-shadow: 0 0 8px rgba(255, 220, 220, 0.7);
     }
 
     h2 {
-        margin-top: 15px;
-        font-size: 20px; 
-        color: #000000;
-        text-shadow: 0 0 8px rgba(255, 220, 220, 0.8);
-        animation: fadeIn 4s ease-in-out;
+        margin-top: 10px;
+        font-size: 18px;
+        color: #000;
+        font-weight: 400;
     }
 
-    /* Countdown groß + Rot */
     #countdown {
-        margin-top: 40px;
-        font-size: 60px;
-        font-weight: bold;
+        margin-top: 25px;
+        font-size: 35px;
+        font-weight: 800;
         color: #cc0000;
-        animation: pulse 2s infinite ease-in-out;
-        line-height: 1.2;
+        line-height: 1.8;
     }
 
-    #countdown span {
-        display: inline-block;
-        margin: 5px 10px;
-    }
-
+    /* Destination Reveal */
     #destination {
         display: none;
-        margin-top: 30px;
-        font-size: 36px;
-        color: #0a2b00;
-        font-weight: bold;
-        animation: fadeInBig 1.8s ease-out forwards;
+        margin-top: 40px;
+        animation: fadeInBig 8s ease-out forwards;
+    }
+
+    #paris-big {
+        font-size: 16vw; /* richtig groß für jedes Handy */
+        font-weight: 800;
+        margin-top: -10px;
+        color: #e50000;
+    }
+
+    #enjoy-text {
+        font-size: 7vw;
+        font-weight: 600;
+        color: #000;
     }
 
     /* Packliste */
     #packlist-container {
-        margin-top: 30px;
-        font-size: 18px;
+        margin-top: 25px;
+        font-size: 16px;
         color: #222;
         max-width: 90%;
         margin-left: auto;
@@ -66,10 +72,9 @@
     }
 
     #packlist-title {
-        font-size: 22px;
-        font-weight: bold;
-        color: #b30000;
-        margin-bottom: 5px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #000000;
         cursor: pointer;
         user-select: none;
         display: flex;
@@ -78,41 +83,28 @@
     }
 
     #packlist-title span.arrow {
-        display: inline-block;
         margin-left: 10px;
         transition: transform 0.3s ease;
     }
 
     #packlist {
-        line-height: 1.5;
         display: none;
+        line-height: 1.6;
         margin-top: 10px;
-        transition: max-height 0.3s ease;
     }
 
     /* Animationen */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-
     @keyframes fadeInBig {
-        from { opacity: 0; transform: scale(0.8); }
+        from { opacity: 0; transform: scale(0.7); }
         to   { opacity: 1; transform: scale(1); }
     }
 
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.08); }
-        100% { transform: scale(1); }
-    }
-
-    /* GOLDENE SCHNEEFLOCKEN */
+    /* Schneeflocken */
     .snowflake {
         position: fixed;
         top: -10px;
         color: #d4a017;
-        font-size: 20px;
+        font-size: 16px;
         user-select: none;
         pointer-events: none;
         animation: fall linear infinite;
@@ -124,23 +116,31 @@
         100% { transform: translateY(110vh); opacity: 0; }
     }
 
-    /* Responsiv */
-    @media (max-width: 600px) {
-        h1 { font-size: 24px; }
-        #countdown { font-size: 36px; }
-        #countdown span { display: block; margin: 5px 0; }
-        #destination { font-size: 28px; }
-        #packlist-title { font-size: 20px; }
-        #packlist { font-size: 16px; }
+    /* Feuerwerk */
+    .firework {
+        position: fixed;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0;
+        animation: explode 1.1s ease-out forwards;
+        z-index: 99999;
     }
+
+    @keyframes explode {
+        0% { opacity: 1; transform: scale(0.2); }
+        100% { opacity: 0; transform: scale(2.8); }
+    }
+
 </style>
 </head>
 <body>
 
-<h1>🎄 Reiseziel 🎅</h1>
+<h1>Reiseziel Countdown</h1>
 <h2>Hi Sophie und Elena</h2>
-<h2>Wir hoffen euch gefällt das Geschenk </h2>
-<h2>Das Ziel erfährt ihr bald </h2>
+<h2>Wir hoffen euch gefällt das Geschenk</h2>
+<h2>Das Ziel seht ihr bald hier:</h2>
 
 <div id="countdown">
     <span id="days">0T</span>
@@ -156,10 +156,10 @@
     </h2>
     <div id="packlist">
         • Warme Jacke / Mantel <br>
-        • Pullover<br>
+        • Pullover <br>
         • Schal, Mütze & Handschuhe <br>
-        • Bequeme Schuhe (wir werden viel gehen) <br>
-        • schöne/gemütliche Hosen <br>
+        • Bequeme Schuhe <br>
+        • Hosen <br>
         • Unterwäsche & Socken <br>
         • Handy & Ladegerät <br>
         • Badesachen <br>
@@ -167,11 +167,15 @@
     </div>
 </div>
 
-<div id="destination">✨ Dein Reiseziel ist: <br><br> 🎉 <span style="font-size:60px;">PARIS</span> 🎉</div>
+<!-- Final Reveal -->
+<div id="destination">
+    <div id="enjoy-text">Viel Spaß in</div>
+    <div id="paris-big">PARIS</div>
+</div>
 
 <script>
     // Countdown
-    var revealTime = new Date("Jan 1, 2026 06:30:00").getTime();
+    var revealTime = new Date("Jan 1, 2026 6:15:00").getTime();
 
     var timer = setInterval(function() {
         var now = new Date().getTime();
@@ -189,30 +193,38 @@
             document.getElementById("seconds").textContent = seconds + "s";
         } else {
             clearInterval(timer);
+
+            // Alles ausblenden
             document.getElementById("countdown").style.display = "none";
+            document.getElementById("packlist-container").style.display = "none";
+            document.querySelectorAll("h1, h2").forEach(el => el.style.display = "none");
+
+            // Reveal zeigen
             document.getElementById("destination").style.display = "block";
+
+            // Feuerwerk starten
+            startFireworks();
         }
     }, 1000);
 
 
-    // ❄ GOLDENE SCHNEEFLOCKEN
+    // Schneeflocken
     function createSnowflake() {
         const snowflake = document.createElement("div");
         snowflake.classList.add("snowflake");
         snowflake.textContent = "❄";
 
         snowflake.style.left = Math.random() * 100 + "vw";
-        snowflake.style.animationDuration = 4 + Math.random() * 4 + "s";
-        snowflake.style.fontSize = (14 + Math.random() * 12) + "px";
+        snowflake.style.animationDuration = 4 + Math.random() * 5 + "s";
 
         document.body.appendChild(snowflake);
-        setTimeout(() => snowflake.remove(), 8000);
+        setTimeout(() => snowflake.remove(), 9000);
     }
 
-    setInterval(createSnowflake, 150);
+    setInterval(createSnowflake, 140);
 
 
-    // Packliste Ein/Ausklappen
+    // Packliste Toggle
     const title = document.getElementById("packlist-title");
     const list = document.getElementById("packlist");
     const arrow = title.querySelector(".arrow");
@@ -226,6 +238,35 @@
             arrow.style.transform = "rotate(0deg)";
         }
     });
+
+
+    /* Feuerwerk */
+    function startFireworks() {
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createFirework, i * 200);
+        }
+    }
+
+    function createFirework() {
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * (window.innerHeight * 0.6);
+
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement("div");
+            p.classList.add("firework");
+
+            p.style.left = x + "px";
+            p.style.top = y + "px";
+            p.style.background = "#ff0000"; // Rot fix
+
+            const size = Math.random() * 7 + 4;
+            p.style.width = size + "px";
+            p.style.height = size + "px";
+
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1100);
+        }
+    }
 </script>
 
 </body>
